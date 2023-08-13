@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import { GitHubFile } from '../../types';
 import { Loading, Button } from '..';
 import { CharacterCount } from './CharacterCount';
@@ -37,9 +36,6 @@ export const Result: React.FC<ResultProps> = memo(
         />
         {files.length ? (
           <>
-            <Link to="/prompt">
-              <Button>Chat</Button>
-            </Link>
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
             <Button variant="secondary" onClick={handleDownload}>Download</Button>
             <Button variant="danger" onClick={clearFiles}>
