@@ -30,7 +30,13 @@ export const RepositorySection = ({
       setError('');
 
       // Add the new repository URL to the stored repositories if not already stored
-      if (!storedRepoUrls.includes(repoUrl)) {
+      // Move the clicked repository to the front of the list
+      if (storedRepoUrls.includes(repoUrl)) {
+        setStoredRepoUrls([
+          repoUrl,
+          ...storedRepoUrls.filter((url) => url !== repoUrl),
+        ]);
+      } else {
         setStoredRepoUrls([repoUrl, ...storedRepoUrls]);
       }
     } else {
@@ -77,15 +83,13 @@ export const RepositorySection = ({
         <div className="text-gray-700 dark:text-gray-300">
           {/* <h2 className="font-bold mb-4">Recent Repositories:</h2> */}
           <span className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-          Recent Repositories:
-        </span>
+            Recent Repositories:
+          </span>
           <ul className="mb-4">
             {storedRepoUrls.map((repo, index) => (
               <li
                 key={index}
-                onClick={() => {
-                  setRepoUrl(repo);
-                }}
+                onClick={() => setRepoUrl(repo)}
                 className="cursor-pointer"
               >
                 {repo}
