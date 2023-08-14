@@ -2,12 +2,42 @@ import React, { useState, useCallback } from 'react';
 
 import { useRepo } from '../context/RepoContext';
 import { Button } from './Button';
+import { Remove } from './icons';
 
 interface RepositoryInputProps {
   setRepo: (repo: string) => void;
   resetRepo: () => void;
   showRecentRepos: boolean;
 }
+
+interface RecentRepoItemProps {
+  repo: string;
+  onSelectClick: () => void;
+  onRemoveClick: (event: React.MouseEvent) => void;
+}
+
+const RecentRepoItem = ({
+  onSelectClick,
+  onRemoveClick,
+  repo,
+}: RecentRepoItemProps) => {
+  const [showRemoveIcon, setShowRemoveIcon] = useState(false);
+  return (
+    <div
+      onClick={onSelectClick}
+      onMouseOver={() => setShowRemoveIcon(true)}
+      onMouseLeave={() => setShowRemoveIcon(false)}
+      className="cursor-pointer flex items-center justify-between hover:dark:bg-gray-800 rounded p-2 mb-2"
+    >
+      {repo}
+      {showRemoveIcon && (
+        <span className="cursor-pointer" onClick={onRemoveClick}>
+          <Remove />
+        </span>
+      )}
+    </div>
+  );
+};
 
 export const RepositorySection = ({
   setRepo,
@@ -50,6 +80,10 @@ export const RepositorySection = ({
     resetRepo();
   }, [resetRepo, setRepoUrl]);
 
+  const handleRemoveClick = (repoToRemove: string) => {
+    setStoredRepoUrls(storedRepoUrls.filter((repo) => repo !== repoToRemove));
+  };
+
   return (
     <div className="mb-4 text-gray-700 dark:text-gray-300">
       <label htmlFor="repo-url" className="block mb-2">
@@ -79,25 +113,26 @@ export const RepositorySection = ({
       <div className="mt-2" style={{ minHeight: '1.5em' }}>
         {error && <p className="text-red-600 m-0">{error}</p>}
       </div>
-      {showRecentRepos && (
+      {showRecentRepos && storedRepoUrls.length ? (
         <div className="text-gray-700 dark:text-gray-300">
-          {/* <h2 className="font-bold mb-4">Recent Repositories:</h2> */}
           <span className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
             Recent Repositories:
           </span>
-          <ul className="mb-4">
-            {storedRepoUrls.map((repo, index) => (
-              <li
-                key={index}
-                onClick={() => setRepoUrl(repo)}
-                className="cursor-pointer"
-              >
-                {repo}
-              </li>
+          <div className="mb-4">
+            {storedRepoUrls.map((repo) => (
+              <RecentRepoItem
+                key={repo}
+                repo={repo}
+                onSelectClick={() => setRepoUrl(repo)}
+                onRemoveClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveClick(repo);
+                }}
+              />
             ))}
-          </ul>
+          </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
