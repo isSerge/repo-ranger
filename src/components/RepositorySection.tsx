@@ -1,16 +1,19 @@
-import { useCallback, useState } from 'react';
-import { Button } from './Button';
+import React, { useState, useCallback } from 'react';
+
 import { useRepo } from '../context/RepoContext';
+import { Button } from './Button';
 
 interface RepositoryInputProps {
   setRepo: (repo: string) => void;
   resetRepo: () => void;
+  showRecentRepos: boolean;
 }
 
-export const RepositoryInput: React.FC<RepositoryInputProps> = ({
+export const RepositorySection = ({
   setRepo,
   resetRepo,
-}) => {
+  showRecentRepos,
+}: RepositoryInputProps) => {
   const { repoUrl, setRepoUrl, storedRepoUrls, setStoredRepoUrls } = useRepo();
   const [error, setError] = useState('');
 
@@ -21,13 +24,14 @@ export const RepositoryInput: React.FC<RepositoryInputProps> = ({
 
   const handleSubmit = useCallback(() => {
     const repoMatch = repoUrl.match(/github.com\/(.+\/.+)(\/|$)/i);
+
     if (repoMatch && repoMatch[1]) {
       setRepo(repoMatch[1]);
       setError('');
 
       // Add the new repository URL to the stored repositories if not already stored
-      if (!storedRepoUrls.includes(repoMatch[1])) {
-        setStoredRepoUrls([...storedRepoUrls, repoUrl]);
+      if (!storedRepoUrls.includes(repoUrl)) {
+        setStoredRepoUrls([repoUrl, ...storedRepoUrls]);
       }
     } else {
       setError('Invalid GitHub repository URL');
@@ -69,6 +73,27 @@ export const RepositoryInput: React.FC<RepositoryInputProps> = ({
       <div className="mt-2" style={{ minHeight: '1.5em' }}>
         {error && <p className="text-red-600 m-0">{error}</p>}
       </div>
+      {showRecentRepos && (
+        <div className="text-gray-700 dark:text-gray-300">
+          {/* <h2 className="font-bold mb-4">Recent Repositories:</h2> */}
+          <span className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Recent Repositories:
+        </span>
+          <ul className="mb-4">
+            {storedRepoUrls.map((repo, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setRepoUrl(repo);
+                }}
+                className="cursor-pointer"
+              >
+                {repo}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
