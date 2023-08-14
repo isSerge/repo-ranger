@@ -24,8 +24,11 @@ export const RepositoryInput: React.FC<RepositoryInputProps> = ({
     if (repoMatch && repoMatch[1]) {
       setRepo(repoMatch[1]);
       setError('');
-      // Add the new repository URL to the stored repositories
-      setStoredRepoUrls([...storedRepoUrls, repoUrl]);
+
+      // Add the new repository URL to the stored repositories if not already stored
+      if (!storedRepoUrls.includes(repoMatch[1])) {
+        setStoredRepoUrls([...storedRepoUrls, repoUrl]);
+      }
     } else {
       setError('Invalid GitHub repository URL');
     }
