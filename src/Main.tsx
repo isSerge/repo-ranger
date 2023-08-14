@@ -1,12 +1,11 @@
 import {
-  RepositoryInput,
   Result,
   Branches,
   Loading,
-  NoRepositorySelected,
   FileList,
   LastCommit,
   FileFilter,
+  RepositorySection,
 } from './components';
 import { useNotification } from './context/NotificationContext';
 import { useBranches } from './context/BranchContext';
@@ -53,7 +52,7 @@ export const Main = () => {
   } = useResult();
 
   const hasErrors = loadRepoBranchesError || loadRepoFilesError;
-  const hasBranches = repoName && !hasErrors && branches.length > 0;
+  const hasBranches = !!(repoName && !hasErrors && branches.length > 0);
   const hasSelectedBranch = repoName && !hasErrors && selectedBranch;
   const hasFiles = repoName && !hasErrors && files.length > 0;
 
@@ -71,7 +70,11 @@ export const Main = () => {
 
   return (
     <div>
-      <RepositoryInput setRepo={setRepo} resetRepo={resetRepo} />
+      <RepositorySection
+        setRepo={setRepo}
+        resetRepo={resetRepo}
+        showRecentRepos={!hasBranches}
+      />
       {isLoadingRepoBranches && <Loading />}
       {hasBranches && (
         <Branches
@@ -103,9 +106,7 @@ export const Main = () => {
                 files={displayedFiles}
                 toggleFileSelect={toggleFileSelect}
               />
-            ) : (
-              <NoRepositorySelected />
-            )}
+            ) : null}
           </div>
           {hasFiles && (
             <div className="md:col-span-2 min-h-[100vh]">
