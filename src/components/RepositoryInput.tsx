@@ -11,7 +11,7 @@ export const RepositoryInput: React.FC<RepositoryInputProps> = ({
   setRepo,
   resetRepo,
 }) => {
-  const { repoUrl, setRepoUrl } = useRepo();
+  const { repoUrl, setRepoUrl, storedRepoUrls, setStoredRepoUrls } = useRepo();
   const [error, setError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,10 +24,12 @@ export const RepositoryInput: React.FC<RepositoryInputProps> = ({
     if (repoMatch && repoMatch[1]) {
       setRepo(repoMatch[1]);
       setError('');
+      // Add the new repository URL to the stored repositories
+      setStoredRepoUrls([...storedRepoUrls, repoUrl]);
     } else {
       setError('Invalid GitHub repository URL');
     }
-  }, [repoUrl, setRepo]);
+  }, [repoUrl, setRepo, setStoredRepoUrls, storedRepoUrls]);
 
   const handleResetClick = useCallback(() => {
     setRepoUrl('');
