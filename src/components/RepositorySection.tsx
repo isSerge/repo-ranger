@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 import { useRepo } from '../context/RepoContext';
 import { Button } from './Button';
-import { Remove } from './icons';
+import { Remove, InfoCircle } from './icons';
 
 interface RepositoryInputProps {
   setRepo: (repo: string) => void;
@@ -113,11 +113,16 @@ export const RepositorySection = ({
       <div className="mt-2 mb-4" style={{ minHeight: '1.5em' }}>
         {error && <p className="text-sm text-red-600 m-0">{error}</p>}
         {!error && (
-          <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
-            Note: Application works with public repositories by default, in order to
-            access private repositories -{' '}
-            <span className="cursor-pointer font-semibold">add your own Github PAT</span>
-          </p>
+          <div className="flex align-center gap-1">
+            <InfoCircle />
+            <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
+              Application works with public repositories by default, in order to
+              access private repositories -{' '}
+              <span className="cursor-pointer font-semibold">
+                add your own Github PAT
+              </span>
+            </p>
+          </div>
         )}
       </div>
       {showRecentRepos && storedRepoUrls.length ? (
