@@ -27,7 +27,7 @@ const RecentRepoItem = ({
       onClick={onSelectClick}
       onMouseOver={() => setShowRemoveIcon(true)}
       onMouseLeave={() => setShowRemoveIcon(false)}
-      className="cursor-pointer flex items-center justify-between hover:dark:bg-gray-800 rounded p-2 mb-2"
+      className="cursor-pointer flex items-center justify-start gap-2 hover:dark:bg-gray-800 rounded p-2 mb-2"
     >
       {repo}
       {showRemoveIcon && (
@@ -110,14 +110,21 @@ export const RepositorySection = ({
           </Button>
         )}
       </div>
-      <div className="mt-2" style={{ minHeight: '1.5em' }}>
-        {error && <p className="text-red-600 m-0">{error}</p>}
+      <div className="mt-2 mb-4" style={{ minHeight: '1.5em' }}>
+        {error && <p className="text-sm text-red-600 m-0">{error}</p>}
+        {!error && (
+          <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
+            Note: Application works with public repositories by default, in order to
+            access private repositories -{' '}
+            <span className="cursor-pointer font-semibold">add your own Github PAT</span>
+          </p>
+        )}
       </div>
       {showRecentRepos && storedRepoUrls.length ? (
         <div className="text-gray-700 dark:text-gray-300">
-          <span className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <p className="mb-2 text-gray-700 dark:text-gray-300">
             Recent Repositories:
-          </span>
+          </p>
           <div className="mb-4">
             {storedRepoUrls.map((repo) => (
               <RecentRepoItem
