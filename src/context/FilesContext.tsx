@@ -8,11 +8,11 @@ import {
   useMemo,
 } from 'react';
 import { GitHubFile } from '../types';
-import { fetchAllFiles } from '../api';
 import { getFileExtensions, sortFilesBySelection } from '../utils';
 import { useBranches } from './BranchContext';
 import { useRepo } from './RepoContext';
 import { useNotification } from './NotificationContext';
+import { useGitHubApi } from './GithubContext';
 
 type FilesState = {
   files: GitHubFile[];
@@ -65,6 +65,7 @@ export const FilesProvider: FC<Props> = ({ children }) => {
   const { selectedBranchName } = useBranches();
   const { repoName } = useRepo();
   const { setNotification } = useNotification();
+  const { fetchAllFiles } = useGitHubApi();
 
   useEffect(() => {
     let isCancelled = false;
@@ -103,7 +104,7 @@ export const FilesProvider: FC<Props> = ({ children }) => {
       isCancelled = true;
       setIsLoadingRepoFiles(false);
     };
-  }, [loadRepoFilesError, repoName, selectedBranchName, setNotification]);
+  }, [fetchAllFiles, loadRepoFilesError, repoName, selectedBranchName, setNotification]);
 
   const toggleFileSelect = (filePath: string) => {
     setFiles((files) =>
