@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { useRepo } from '../context/RepoContext';
 import { Button } from './Button';
 import { Remove, InfoCircle } from './icons';
+import { TokenModal } from './TokenModal';
 
 interface RepositoryInputProps {
   setRepo: (repo: string) => void;
@@ -46,6 +47,7 @@ export const RepositorySection = ({
 }: RepositoryInputProps) => {
   const { repoUrl, setRepoUrl, storedRepoUrls, setStoredRepoUrls } = useRepo();
   const [error, setError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRepoUrl(e.target.value);
@@ -86,6 +88,11 @@ export const RepositorySection = ({
 
   return (
     <div className="mb-4 text-gray-700 dark:text-gray-300">
+      <TokenModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={(token) => console.log(token)}
+      />
       <label htmlFor="repo-url" className="block mb-2">
         GitHub Repository URL:
       </label>
@@ -116,10 +123,12 @@ export const RepositorySection = ({
           <div className="flex align-center gap-1">
             <InfoCircle />
             <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
-              Application works with public repositories by default, in order to
-              access private repositories -{' '}
-              <span className="cursor-pointer font-semibold">
-                add your own Github PAT
+              In order to access private repositories -{' '}
+              <span
+                className="cursor-pointer font-semibold"
+                onClick={() => setIsModalOpen(true)}
+              >
+                add your Github PAT
               </span>
             </p>
           </div>

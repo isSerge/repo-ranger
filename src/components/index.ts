@@ -8,3 +8,4 @@ export { Header } from './Header';
 export { Result } from './Result';
 export { Notification } from './Notification';
 export { RepositorySection } from './RepositorySection';
+export { TokenModal } from './TokenModal';
