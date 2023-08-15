@@ -91,7 +91,6 @@ export const RepositorySection = ({
       <TokenModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={(token) => console.log(token)}
       />
       <label htmlFor="repo-url" className="block mb-2">
         GitHub Repository URL:
@@ -118,11 +117,11 @@ export const RepositorySection = ({
         )}
       </div>
       <div className="mt-2 mb-4" style={{ minHeight: '1.5em' }}>
-        {error && <p className="text-sm text-red-600 m-0">{error}</p>}
+        {error && <p className="text-sm text-red-600">{error}</p>}
         {!error && (
           <div className="flex align-center gap-1">
             <InfoCircle />
-            <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               In order to access private repositories -{' '}
               <span
                 className="cursor-pointer font-semibold"

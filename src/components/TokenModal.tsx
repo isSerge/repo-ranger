@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from './Button';
+import { useGitHubApi } from '../context/GithubContext';
 
 interface TokenModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (token: string) => void;
 }
 
-export const TokenModal = ({ isOpen, onClose, onSubmit }: TokenModalProps) => {
+export const TokenModal = ({ isOpen, onClose }: TokenModalProps) => {
   const [token, setToken] = useState('');
+  const { setToken: setGitHubToken } = useGitHubApi();
 
   const handleOutsideClick = (e: React.BaseSyntheticEvent) => {
     if (e.target.className.includes('outside-click-handler')) {
@@ -24,6 +25,11 @@ export const TokenModal = ({ isOpen, onClose, onSubmit }: TokenModalProps) => {
     },
     [onClose]
   );
+
+  const handleSubmitClick = () => {
+    setGitHubToken(token);
+    onClose();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -68,14 +74,7 @@ export const TokenModal = ({ isOpen, onClose, onSubmit }: TokenModalProps) => {
             />
           </div>
           <div className="bg-gray-100 dark:bg-gray-900 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse text-gray-700 dark:text-gray-300 gap-2">
-            <Button
-              onClick={() => {
-                onSubmit(token);
-                onClose();
-              }}
-            >
-              Submit
-            </Button>
+            <Button onClick={handleSubmitClick}>Submit</Button>
           </div>
         </div>
       </div>
