@@ -9,24 +9,45 @@ interface TokenModalProps {
 
 export const TokenModal = ({ isOpen, onClose }: TokenModalProps) => {
   const [token, setToken] = useState('');
-  const { setToken: setGitHubToken } = useGitHubApi();
+  const [tokenError, setTokenError] = useState('');
+  const { setToken: setGitHubToken, validateToken } = useGitHubApi();
+
+  const fallbackToDefaultToken = useCallback(() => {
+    setGitHubToken('');
+    setTokenError('');
+    setToken('');
+    onClose();
+  }, [onClose, setGitHubToken]);
 
   const handleOutsideClick = (e: React.BaseSyntheticEvent) => {
     if (e.target.className.includes('outside-click-handler')) {
-      onClose();
+      fallbackToDefaultToken();
     }
   };
 
   const handleEscapeKeyPress = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        fallbackToDefaultToken();
       }
     },
-    [onClose]
+    [fallbackToDefaultToken]
   );
 
-  const handleSubmitClick = () => {
+  const handleSubmitClick = async () => {
+    if (!token) {
+      setTokenError('Token must not be empty.');
+      return;
+    }
+
+    const isValid = await validateToken(token);
+
+    if (!isValid) {
+      setTokenError('Token validation failed.');
+      return;
+    }
+
+    setTokenError('');
     setGitHubToken(token);
     onClose();
   };
@@ -72,9 +93,15 @@ export const TokenModal = ({ isOpen, onClose }: TokenModalProps) => {
               className="border border-gray-300 dark:border-gray-700 rounded p-2 w-full mt-4"
               placeholder="Enter your GitHub token"
             />
+            {tokenError && (
+              <div className="text-red-600 text-sm mt-2">{tokenError}</div>
+            )}
           </div>
           <div className="bg-gray-100 dark:bg-gray-900 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse text-gray-700 dark:text-gray-300 gap-2">
             <Button onClick={handleSubmitClick}>Submit</Button>
+            <Button variant="secondary" onClick={fallbackToDefaultToken}>
+              Use default token
+            </Button>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 import { useRepo } from '../context/RepoContext';
 import { Button } from './Button';
-import { Remove, InfoCircle } from './icons';
+import { Remove } from './icons';
 import { TokenModal } from './TokenModal';
 
 interface RepositoryInputProps {
@@ -120,7 +120,6 @@ export const RepositorySection = ({
         {error && <p className="text-sm text-red-600">{error}</p>}
         {!error && (
           <div className="flex align-center gap-1">
-            <InfoCircle />
             <p className="text-sm text-gray-700 dark:text-gray-300">
               In order to access private repositories -{' '}
               <span

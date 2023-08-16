@@ -52,6 +52,7 @@ type GitHubApiContextType = {
     repoName: string,
     signal?: AbortSignal
   ) => Promise<GithubBranch[]>;
+  validateToken: (token: string) => Promise<boolean>;
 };
 
 const GitHubApiContext = createContext<GitHubApiContextType | undefined>(
@@ -70,13 +71,13 @@ type Props = {
   children: ReactNode;
 };
 
+const defaultToken = process.env.REACT_APP_GITHUB_TOKEN;
+
 export const GitHubApiProvider: FC<Props> = ({ children }) => {
-  const [token, setToken] = useState<string | undefined>(
-    process.env.REACT_APP_GITHUB_TOKEN
-  );
+  const [token, setToken] = useState<string | undefined>(undefined);
 
   const octokit = useMemo(() => {
-    return new Octokit({ auth: token });
+    return new Octokit({ auth: token || defaultToken });
   }, [token]);
 
   const fetchAllFiles = async (
@@ -184,6 +185,20 @@ export const GitHubApiProvider: FC<Props> = ({ children }) => {
     return branches;
   };
 
+  const validateToken = async (token: string): Promise<boolean> => {
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const validationOctokit = new Octokit({ auth: token });
+      await validationOctokit.request('GET /user');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   return (
     <GitHubApiContext.Provider
       value={{
@@ -192,6 +207,7 @@ export const GitHubApiProvider: FC<Props> = ({ children }) => {
         fetchAllFiles,
         fetchFileContent,
         fetchBranches,
+        validateToken,
       }}
     >
       {children}
