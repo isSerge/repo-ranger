@@ -83,8 +83,16 @@ export const TokenModal = ({ isOpen, onClose }: TokenModalProps) => {
               Enter GitHub Personal Access Token
             </h3>
             <p className="mt-2 text-sm">
-              Please enter your token with read permissions to access private
-              repositories.
+              Please enter your{' '}
+              <a
+                href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold"
+              >
+                token
+              </a>{' '}
+              with read permissions to access private repositories.
             </p>
             <input
               type="password"
