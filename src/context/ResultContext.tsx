@@ -7,11 +7,11 @@ import {
   FC,
   ReactNode,
 } from 'react';
-import { fetchFileContent } from '../api';
 import { useFiles } from './FilesContext';
 import { useRepo } from './RepoContext';
 import { useBranches } from './BranchContext';
 import { useNotification } from './NotificationContext';
+import { useGitHubApi } from './GithubContext';
 
 type ResultState = {
   isLoadingFileContents: boolean;
@@ -51,6 +51,7 @@ export const ResultProvider: FC<Props> = ({ children }) => {
   >(null);
 
   const { setNotification } = useNotification();
+  const { fetchFileContent } = useGitHubApi();
 
   const [selectedFileContents, setSelectedFileContents] = useState<
     Map<string, string>
@@ -111,7 +112,7 @@ export const ResultProvider: FC<Props> = ({ children }) => {
     return () => {
       abortController.abort();
     };
-  }, [repoName, setContentsLoading, selectedBranchName, setNotification, selectedFiles, totalCharCount]);
+  }, [repoName, setContentsLoading, selectedBranchName, setNotification, selectedFiles, totalCharCount, fetchFileContent]);
 
   const fileContent = [...selectedFileContents.values()].join('\n\n');
 

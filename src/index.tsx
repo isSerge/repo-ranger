@@ -9,7 +9,7 @@ import { BranchesProvider } from './context/BranchContext';
 import { RepoProvider } from './context/RepoContext';
 import { FilesProvider } from './context/FilesContext';
 import { ResultProvider } from './context/ResultContext';
-import { LangchainProvider } from './context/LangchainContext';
+import { GitHubApiProvider } from './context/GithubContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,19 +17,19 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <NotificationProvider>
-        <RepoProvider>
-          <BranchesProvider>
-            <FilesProvider>
-              <ResultProvider>
-                <LangchainProvider>
+      <GitHubApiProvider>
+        <NotificationProvider>
+          <RepoProvider>
+            <BranchesProvider>
+              <FilesProvider>
+                <ResultProvider>
                   <App />
-                </LangchainProvider>
-              </ResultProvider>
-            </FilesProvider>
-          </BranchesProvider>
-        </RepoProvider>
-      </NotificationProvider>
+                </ResultProvider>
+              </FilesProvider>
+            </BranchesProvider>
+          </RepoProvider>
+        </NotificationProvider>
+      </GitHubApiProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

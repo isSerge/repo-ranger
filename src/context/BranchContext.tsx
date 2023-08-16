@@ -6,9 +6,9 @@ import {
   FC,
   ReactNode,
 } from 'react';
-import { fetchBranches } from '../api';
 import { GithubBranch } from '../types';
 import { useNotification } from './NotificationContext';
+import { useGitHubApi } from './GithubContext';
 
 type BranchesState = {
   branches: GithubBranch[];
@@ -44,6 +44,7 @@ export const BranchesProvider: FC<Props> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { setNotification } = useNotification();
+  const { fetchBranches } = useGitHubApi();
 
   const fetchRepoBranches = useCallback(
     async (repo: string) => {
@@ -74,7 +75,7 @@ export const BranchesProvider: FC<Props> = ({ children }) => {
         setLoading(false);
       }
     },
-    [selectedBranchName, setNotification]
+    [fetchBranches, selectedBranchName, setNotification]
   );
 
   const selectedBranch = branches.find(
