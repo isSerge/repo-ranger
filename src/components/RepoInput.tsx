@@ -1,50 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useRepo } from '../context/RepoContext';
 import { Button } from './Button';
-import { Remove } from './icons';
 import { TokenModal } from './TokenModal';
 
-interface RepositoryInputProps {
+interface RepoInputProps {
   setRepo: (repo: string) => void;
   resetRepo: () => void;
-  showRecentRepos: boolean;
 }
 
-interface RecentRepoItemProps {
-  repo: string;
-  onSelectClick: () => void;
-  onRemoveClick: (event: React.MouseEvent) => void;
-}
-
-const RecentRepoItem = ({
-  onSelectClick,
-  onRemoveClick,
-  repo,
-}: RecentRepoItemProps) => {
-  const [showRemoveIcon, setShowRemoveIcon] = useState(false);
-  return (
-    <div
-      onClick={onSelectClick}
-      onMouseOver={() => setShowRemoveIcon(true)}
-      onMouseLeave={() => setShowRemoveIcon(false)}
-      className="cursor-pointer flex items-center justify-start gap-2 hover:dark:bg-gray-800 rounded p-2 mb-2"
-    >
-      {repo}
-      {showRemoveIcon && (
-        <span className="cursor-pointer" onClick={onRemoveClick}>
-          <Remove />
-        </span>
-      )}
-    </div>
-  );
-};
-
-export const RepositorySection = ({
+export const RepoInput = ({
   setRepo,
   resetRepo,
-  showRecentRepos,
-}: RepositoryInputProps) => {
+}: RepoInputProps) => {
   const { repoUrl, setRepoUrl, storedRepoUrls, setStoredRepoUrls } = useRepo();
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,10 +49,6 @@ export const RepositorySection = ({
     setError('');
     resetRepo();
   }, [resetRepo, setRepoUrl]);
-
-  const handleRemoveClick = (repoToRemove: string) => {
-    setStoredRepoUrls(storedRepoUrls.filter((repo) => repo !== repoToRemove));
-  };
 
   return (
     <div className="mb-4 text-gray-700 dark:text-gray-300">
@@ -132,26 +96,6 @@ export const RepositorySection = ({
           </div>
         )}
       </div>
-      {showRecentRepos && storedRepoUrls.length ? (
-        <div className="text-gray-700 dark:text-gray-300">
-          <p className="mb-2 text-gray-700 dark:text-gray-300">
-            Recent Repositories:
-          </p>
-          <div className="mb-4">
-            {storedRepoUrls.map((repo) => (
-              <RecentRepoItem
-                key={repo}
-                repo={repo}
-                onSelectClick={() => setRepoUrl(repo)}
-                onRemoveClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveClick(repo);
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 };

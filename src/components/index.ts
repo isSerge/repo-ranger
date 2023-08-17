@@ -7,5 +7,6 @@ export { Button } from './Button';
 export { Header } from './Header';
 export { Result } from './Result';
 export { Notification } from './Notification';
-export { RepositorySection } from './RepositorySection';
+export { RepoInput } from './RepoInput';
 export { TokenModal } from './TokenModal';
+export { RecentRepos }  from './RecentRepos';
