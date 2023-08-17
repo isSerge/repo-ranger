@@ -5,7 +5,8 @@ import {
   FileList,
   LastCommit,
   FileFilter,
-  RepositorySection,
+  RepoInput,
+  RecentRepos,
 } from './components';
 import { useNotification } from './context/NotificationContext';
 import { useBranches } from './context/BranchContext';
@@ -70,11 +71,8 @@ export const Main = () => {
 
   return (
     <div>
-      <RepositorySection
-        setRepo={setRepo}
-        resetRepo={resetRepo}
-        showRecentRepos={!hasBranches}
-      />
+      <RepoInput setRepo={setRepo} resetRepo={resetRepo} />
+      {!hasBranches && <RecentRepos />}
       {isLoadingRepoBranches && <Loading />}
       {hasBranches && (
         <Branches
