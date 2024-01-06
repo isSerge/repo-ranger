@@ -1,6 +1,7 @@
 # RepoRanger
 
-RepoRanger is a React application that allows users to explore GitHub repositories and select files to view and copy their contents.
+RepoRanger is a React application that allows users to explore GitHub
+repositories and select files to view and copy their contents.
 
 ## Features
 
@@ -12,7 +13,8 @@ RepoRanger is a React application that allows users to explore GitHub repositori
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development purposes.
+These instructions will get you a copy of the project up and running on your
+local machine for development purposes.
 
 ### Prerequisites
 
@@ -24,13 +26,13 @@ These instructions will get you a copy of the project up and running on your loc
 1. Clone the repository:
 
 ```
-git clone https://github.com/subspace/RepoRanger.git
+git clone git@github.com:isSerge/repo-ranger.git
 ```
 
 2. Install the dependencies:
 
 ```
-cd RepoRanger
+cd repo-ranger
 yarn
 ```
 
@@ -40,26 +42,33 @@ yarn
 REACT_APP_GITHUB_TOKEN=your_github_personal_access_token
 ```
 
-Replace `your_github_personal_access_token` with your GitHub personal access token.
+Replace `your_github_personal_access_token` with your GitHub personal access
+token.
 
 4. Start the development server:
 
 ```
 yarn start
 ```
+
 The application will be available at `http://localhost:3000`.
 
 5. To create a production build for deployment, run:
+
 ```
 yarn build
 ```
+
 The optimized build output will be in the `build` folder.
 
 ## Built With
 
-- [React](https://reactjs.org/) - A JavaScript library for building user interfaces
-- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs
+- [React](https://reactjs.org/) - A JavaScript library for building user
+  interfaces
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for
+  rapidly building custom designs
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
+for details.
